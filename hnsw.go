@@ -13,13 +13,20 @@ import (
 
 	"github.com/plus2047/go-hnsw/bitsetpool"
 	"github.com/plus2047/go-hnsw/distqueue"
-	"github.com/plus2047/go-hnsw/f32"
 )
 
 type Point []float32
 
 func (a Point) Size() int {
 	return len(a) * 4
+}
+
+func L2Squared(x, y []float32) float32 {
+	var total float64 = 0
+	for i := range x {
+		total += float64((x[i] - y[i]) * (x[i] - y[i]))
+	}
+	return float32(math.Sqrt(total))
 }
 
 type node struct {
@@ -72,7 +79,7 @@ func Load(filename string) (*Hnsw, int64, error) {
 	h.maxLayer = readInt32(z)
 	h.enterpoint = uint32(readInt32(z))
 
-	h.DistFunc = f32.L2Squared8AVX
+	h.DistFunc = L2Squared
 	h.bitset = bitsetpool.New()
 
 	l := readInt32(z)
@@ -370,7 +377,7 @@ func New(M int, efConstruction int, first Point) *Hnsw {
 
 	h.bitset = bitsetpool.New()
 
-	h.DistFunc = f32.L2Squared8AVX
+	h.DistFunc = L2Squared
 
 	// add first point, it will be our enterpoint (index 0)
 	h.nodes = []node{node{level: 0, p: first}}
