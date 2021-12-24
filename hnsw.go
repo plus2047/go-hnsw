@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Bithack/go-hnsw/bitsetpool"
-	"github.com/Bithack/go-hnsw/distqueue"
-	"github.com/Bithack/go-hnsw/f32"
+	"github.com/plus2047/go-hnsw/bitsetpool"
+	"github.com/plus2047/go-hnsw/distqueue"
+	"github.com/plus2047/go-hnsw/f32"
 )
 
 type Point []float32
